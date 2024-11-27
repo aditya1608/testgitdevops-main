@@ -1,0 +1,130 @@
+
+
+1. First step is to create a EC2 instance on OS Ubuntu of 80 GB Hard Drive : 
+      
+2. Second step install the Docker from the below link :
+        Link : https://docs.docker.com/engine/install/ubuntu/
+
+3. Download the minikube package from the given below link :
+        Link : https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download
+        Command :
+                  curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+                  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+
+4. Now start the minikube server :
+        Command : minikube start --force
+
+5. Download the kubectl package from the below link :
+        Link : https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+               https://pwittrock.github.io/docs/tasks/tools/install-kubectl/
+               
+        Command : curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+6. After download the kubectl package add the execute permission to the kubectl :
+        Command : chmod +x kubectl
+
+7. Now move the kubectl package to /usr/bin folder :
+        Command : mv kubectl /usr/bin/kubectl
+
+8. To list all the running pods :
+        Command : kubectl get pods -A    OR   kubectl get pods --all-namespaces
+                  kubectl get pods -o wide -> This command will print the entire details of the pod
+                  kubectl get pods -w -> This will show live what is happening with the pods
+
+9. To get more detail information about the pods :
+        Syntax : kubectl describe pod <pod-name>
+        Example : kubectl describe pod mypod
+
+        a. List detail information of a pod with the given namespace :
+            Syntax :   kubectl describe pods <pod-name> -n  <namespace-name>
+            Command :  kubectl describe pods kube-scheduler-minikube -n  kube-system
+
+        b. List all the logs inside the pod with the given namespace :
+            Synatax : kubectl logs <pod-name> -n <namespace-name>
+            Command : kubectl logs kube-scheduler-minikube -n  kube-system
+
+10. To list all the namespaces :
+        Command : kubectl get ns    OR   kubectl get namespaces
+        Command : kubectl get all --all-namespaces -> This command will give all the
+                  information about the resources created in the cluster.
+
+11. To get more detail information about the namespace :
+        Syntax : kubectl describe ns <namespace-name>
+        Example : kubectl describe ns kube-system
+
+12. To get the information of the Cluster :
+        Command : kubectl cluster-info
+
+13. You can add the package of AutoCompletion in kubectl to enable AutoCompletion feature:
+        Link : https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion
+        Command :
+                  - apt-get install bash-completion
+                  - source /usr/share/bash-completion/bash_completion
+                  - echo 'source <(kubectl completion bash)' >>~/.bashrc
+                  - source ~/.bashrc
+
+14. To list all the nodes with information :
+        Command : kubectl get nodes
+
+15. To get more detail information about the node :
+        Syntax : kubectl describe nodes <node-name>
+        Example : kubectl describe nodes minikube
+
+16. Command to create namespace :
+        Command :  kubectl create ns test
+
+17. Deleting a namespace :
+        Command : kubectl delete ns
+
+18. To get all the events in the Cluster :
+        Command : kubectl get event
+
+19. To run a pod inside a namspace :
+       Synatax : kubectl run <pod-name> --image=<image-name> -n <namespace-name>
+       Command :  
+             - kubectl run nginx --image=nginx -n dev
+             - kubectl run httpd --image=httpd -n dev
+
+20. Command to check pod created or not :
+       Syntax : kubectl get pods -n <namespace-name> (This command will list all the pods created inside this namespace)
+       Command : kubectl get pods -n dev
+
+21. Command to delete a pod inside the namespace :
+       Syntax : kubectl delete pod <pod-name> -n <namespace-name>
+       Command : kubectl delete pod pod -n dev
+
+22. To get inside the pod which we have created :
+       Syntax : kubectl exec -it <pod-name> -n <namespace-name> -- bash
+       Command : kubectl exec -it nginx -n dev -- bash
+
+23. If we are running multiple containers inside a pod and if we want to get inside a specific container we have to use the following command :
+        Syntax : kubectl exec -it <pod-name> -c <container-name> -- bash
+        Command : kubectl exec -it mypod -c tomcat-web -- bash
+
+23. In the above mentioned command we are mentioning the namespace every time. So, if we don't want to mention namespace :
+    every time we can also do that with the help of package kubectlns :
+      Link : https://github.com/ahmetb/kubectx/releases
+
+      a. Select the kubens_v0.9.5_linux_x86_64.tar.gz file from the list and copy the link address of the file :
+
+      b. Now, download the file using the wget command :
+            Command : wget https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubens_v0.9.5_linux_x86_64.tar.gz
+
+      c. Extract the downloaded file using tar command :
+            Command :  tar -xvf kubens_v0.9.5_linux_x86_64.tar.gz
+
+      d. Finally move the kubens file to the /usr/bin/ folder :
+            Command : mv kubens /usr/bin/kubens
+
+      e. Now, if you want to select the default namespace :
+            Syntax : kubens <namespace-name>
+            Command : kubens dev
+
+
+
+==================================================================================================================
+
+Kubernetes Cheat Sheet :  https://kubernetes.io/docs/reference/kubectl/quick-reference/
+
+
+

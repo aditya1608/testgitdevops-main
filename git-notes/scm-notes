@@ -1,0 +1,50 @@
+
+
+Source code management (SCM) is used to track modifications to a source code repository. SCM tracks a running history of changes 
+to a code base and helps resolve conflicts when merging updates from multiple contributors. SCM is also synonymous with Version 
+control. 
+
+As software projects grow in lines of code and contributor head count, the costs of communication overhead and management 
+complexity also grow. SCM is a critical tool to alleviate the organizational strain of growing development costs.
+
+=======================================================================================================================================
+
+Importance of the Source Code Management tools
+
+Or
+
+Why we need the Source Code Management Tools
+
+
+    1. Backup and Restore:
+        If we use the source code management tools, we can always back up our files. We can save them at any point and also can be restored from the last saved.
+
+    2. Synchronization :
+        We can synchronize our code so programmers can get the latest code and also able to fetch up the updated code at any time from the respiratory.
+
+    3. Short and Long term undo :
+        In some cases, when the file gets really mesh up, we are able to do short-term undo to the last version, or we can do the long-term undo, which would roll back to the previous version. We are also able to track the changes, we can see the commit changes for the changes that they have done. We are also able to see the ownership of the commits that have been made on the branch.
+
+    4. Track changes :
+        We can track our changes and we can also track the changes when someone makes any changes. We will be able to see their commits for the changes that they have done.
+
+    5. Ownership :
+        We are able to see the ownership of the commits that have been made on the branch, basically on the master branch.
+        Branching and merging
+        We can do branching and merging, which is very important in source code management, where we can create for our source code to create our own changes on it and then merge back it into our master branch.
+
+
+=====================================================================================================================================
+
+Types of Source Code Management (SCM) DevOps Tools:
+
+1. BitBucket
+2. GitHub
+3. GitLab
+4. Team Foundation Server
+5. Subversion
+
+Task : 
+1. What is diff between Github and Gitlab
+2. Create account in Gitlab and create private repo
+3. Clone the repo and push the code

@@ -1,0 +1,177 @@
+
+
+1. Install the Docker dependencies from the below link (Try to use Ubuntu Server) :
+   Link :   https://docs.docker.com/engine/install/ubuntu/
+
+2. Containerization :
+      -  Container engines can run multiple, isolated instances, known as Containers
+   
+3. Installation : 
+      - Podman
+      - CentOS rkt
+      - runC
+      - Containerd
+      - Docker
+
+4. Installation : WSL Ubuntu
+      - https://ubuntu.com/desktop/wsl
+
+5. Commands :
+      - docker --help:
+      - docker ps : to list the running containers (ps means Process Status)
+      - docker images : list all images available in your local repository
+      - docker pull <image name> : to pull image from repository[docker hub]
+          Example : 
+            - docker pull nginx:latest
+            - docker pull python:3.8 (To pull a image of a specific version)
+      
+       - docker rmi <image-name> : to remove image from local storage
+           ex:
+             - docker rmi mysql
+             - docker rmi nginx
+
+       - To forcefully remove the image : 
+           ex:
+             - docker rmi -f mariadb   
+             - docker rmi -f mariadb:10.6  (To remove a specific version of package)
+
+       - docker run : to run containers from docker images and if image is not available in local machine then it will pull also
+           ex:
+             - docker run nginx:latest -> It will pull image and run container in foreground
+             - docker run -d nginx:latest -> -d will run container in Background
+             - docker ps -> This command will show the running containers
+             - docker kill <container-id> -> to kill a running container
+                 ex: docker kill 8b120880529a
+
+       - docker ps -a : to list exited containers
+       - docker images -q : to all the images id without image name
+       - docker rmi -f `docker images -q` : to remove all the images at once forcefully
+       - docker ps -a -q : to list all containers ids with exited status
+       - docker rm -f `docker ps -a -q`: to remove all the containers forcefully at once using container ids
+       - docker run -d -e MYSQL_ROOT_PASSWORD=redhat123 mysql : where e is for environment variable
+       - docker logs <container-id> : this command will list all the logs created inside the container. The use of the logs
+                                      is to check the issue happened inside the container so that we can fix that issue.
+
+       - docker exec -it 5ac42bdac85d bash : this command will help you to get inside the container
+       - docker run -it edbfe74c41f8 hostname : check the hostname of the running container
+       - docker run -it edbfe74c41f8 cat /etc/os-release : display the OS release information
+       - docker inspect <container-id> : to check the properties of the running container
+            ex: docker inspect edbfe74c41f8
+
+       - docker run -it nginx echo "Container Created" : this command will print the message 
+       - curl ifconfig.me : check the port number of the machine
+       - docker run -d -p 8080:80 nginx:latest : to map the container default port to new port number. This method is called
+                                                 port forwarding.
+            where, 
+               8080 is the new port number which will be accessed
+               80 is the default port of the container
+            Now, we can access the web server inside nginx using the url
+               ex : http://3.110.49.208:8080
+      
+
+       - docker run -d -P nginx:latest : this command will give the random port to the container.
+       - docker run -d -P -v /root/data/:/usr/share/nginx/html nginx:latest :  this command will copy the files from local
+                                                                               machine to the container and we have to use
+                                                                               -v option to do this task and the process is
+                                                                               called Volume Binding
+
+            where,
+               /root/data/ : is the path of the local machine where files are present
+               /usr/share/nginx/html : is the path of the container where the files will be copied
+
+
+      What is Docker Volume ?
+      - The purpose of using Docker volumes is to persist data outside the container so it can be 
+        backed up or shared. Docker volumes are dependent on Docker's file system and are the 
+        preferred method of persisting data for Docker containers and services.
+
+        npm install -g nodemon
+
+       - docker volume ls : to list all the volumes
+       - docker volume create <volume-name> : create new docker volume with the specified name
+            ex: docker volume create voltest1
+         
+         
+6. Docker system cleanup command : 
+
+      - docker rm -f $(docker ps -aq) : removes all the exited and running containers
+      - docker container prune : this command will remove only the stopped container (Stopped container can be start again)
+      - docker container prune -f : this command will forcefully remove the stopped container and it will not ask for confirmation
+      - docker image prune -a : this command will remove all the unused images at once but if we have launched a container with
+                                that image and the container is in running state then that image will not be removed.
+
+      - docker image prune -af : remove forcefully all the unused images at once but in this case it will not ask for the
+                                 confirmation.
+
+      - docker system prune  : this command will remove all the unused containers, images, volumes etc at once
+      - docker system prune -af : remove forcefully all the unused containers, images, volumes etc at once but it will not ask
+                                 for the confirmation before removing.
+      
+
+7. Configuring MySql image on Docker : 
+
+      1. Run MySql image : docker run --name root -e MYSQL_ROOT_PASSWORD=1234 -d mysql
+      2. Login in to mysql : mysql -u root -p
+      3. Run MySql on a specific port number : docker run -d --name test-mysql -e MYSQL_ROOT_PASSWORD=1234 -p 3307:3306 mysql
+      4. Checking MySql port : docker port test-mysql
+      5. Installing and Enabling MySql Server :
+                  a) sudo apt install mysql-server
+                  b) sudo systemctl start mysql.service
+
+      6. Now connect mysql database from Container to local :
+            mysql --host=127.0.0.1 --port=3307 -u root -p
+
+
+8. Install ping command on ubuntu :
+            apt-get install -y iputils-ping
+
+9. docker network ls : it will list all the networks
+
+10. docker inspect bridge : it will show all the networks informtion connected through bridge
+
+11.  hostname -I : to check container IP address
+
+12. To create custom bridge network : 
+            Command : docker network create <network-name>
+            Example : docker network create work
+
+13. To create a container inside the custome network :
+            Example : docker run -it --network work --name server3 ubuntu /bin/bash
+
+
+14. Types of Networks in docker :
+            a) bridge
+            b) host
+            c) overlay
+            d) ipvlan
+            e) macvlan
+            f) none
+
+
+      Link : https://docs.docker.com/engine/network/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      Note : 
+            1. If we create a container and the container doesn't have any process to run or in other words we can say that we 
+               are not running any service or any applications. So, the container will exit automatically because the container
+               has no work todo because the container will run on a single process. (most important point in Docker)
+
+            2. Containers are Voltile. It means if the container is deleted all the data will be lost
+            

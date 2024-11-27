@@ -1,0 +1,27 @@
+
+
+Now we will learn how to push our images in Amazon ECR (Elastic Container Repository)
+
+1. Go to the ECR and create the repository. It can be public and private depending on the requirements.
+
+2. Why we are using ECR because in this all the features are free.
+      For ex : we can create private repository , we can scan our images for vunlerability etc
+
+3. Now to use the Amazon ECR aws cli package should be installed :
+      Link : https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+      
+      Open the above link and there you will all the steps required to install aws-cli package
+
+      Steps to install aws-cli :
+
+            a) First install the unzip package : apt-install unzip
+            b) curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+               unzip awscliv2.zip
+               sudo ./aws/install
+            c) After that configure the AWS Credential or AWS IAM role need to be attached
+            d) Now create the role in AWS and attach to the EC2 instance
+            
+
+
+
+

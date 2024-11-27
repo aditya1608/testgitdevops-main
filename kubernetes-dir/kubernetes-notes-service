@@ -1,0 +1,232 @@
+
+                                      Kubernetes Service
+
+1. Why do we need a service in kubernetes and what will happen if there is no service ? :
+
+   - Understanding with the help of example.
+
+     a) Suppose, One of the pods which is running goes down due to some reason or someone by mistake delete the pods.
+        So, as we know that kubernetes has Auto healing feature so it will re create the pod again and it will start 
+        working.
+
+    b) But the main issue is that when the pods get created at first at that time IP address is 12.43.54.43
+       and when the pod is deleted or it is going down kubernetes will crete a new pod but this time the IP
+       address changed. For ex - 54.67.34.65
+
+    c) So, if the Service concept is not there is kubernetes then you have to share the new IP address to the
+       user which is accessing the application with the old IP address. If you don't tell the user new IP address
+       then it cannot access the application because the IP address has changed.
+
+    d) So, Instead of giving new IP address to the users we can create a service on top of the pods and all the
+       traffic will goes through from service to pods. Here Service will act as a "LOAD BALANCER" and it uses
+       a component in kubernetes called "KUBE PROXY"
+
+    e) Another advantage of using Service is called "SERVICE DISCOVERY"
+
+    f) Even though the Service concept is implemented and when users request to access the application the service
+       will forward the request to the pods but the issue is that in which pod it should send the request how it will
+       identify in which pod the application is deployed and in which pod I have to trasfer the request. 
+       So, to solve this problem the new concept is introduced which is called "SERVICE DISCOVERY" and this will
+       use the concept of "LABELS & SELECTORS" concept to solve this problem.
+
+    g) So, what this "LABELS & SELECTORS" will do it will apply a labels to the podsand it will identify the pod 
+       with the help of labels. So, here "LABELS & SELECTORS" is keeping track of IP address with help of Labels
+       not with the IP address. So, this is the "SERVICE DISCOVERY" mechanism concept of Kubernetes.
+
+    h) How service will expose your application to the external world and you have to define this in YAML file
+       which is of 3 types -
+
+          i) Cluster IP
+          ii) Nodeport
+          iii) Load Balancer
+
+
+          i) Cluster IP :  If you create a Service with Cluster IP mode then this is the by default behaviour and your
+                           application will be access inside the Kubernetes Cluster only ad you will get only 2 benefits 
+                           with this Cluster IP first is Discovery and second is Load Balancer
+
+          ii) Nodeport : If you create Service of type Nodeport it will allow your service to access inside the 
+                         organization or anybody within the network can access the application with the help
+                         of worker node IP address.
+
+          iii) Load Balancer : It is basically expose your application to the external world and you are
+                               exposing your application with the Load Balancer you will get the 
+                               "Elastic Load Balancer" IP address for your specific service and anyone
+                               in the world who has access to the internet can access this application
+                               with the ELB IP address
+
+
+  Note : 
+        1. What is the idle size of the pod ?
+           -  It depends upon the number of concurrent users and the number of requests your one replica of your 
+              application can handle.
+
+        2. Containers are ephimeral means if a container dies then it will not come up automatically.
+
+  
+  In Summary what a Service can do :
+
+    1. Load Balancing
+    2. Service Discovery
+    3. Expose to world
+
+
+
+  2. We can also write multiple deployment code in one file separeted by --- :
+      Link : https://kubernetes.io/docs/concepts/services-networking/service/
+
+  apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home
+  labels:
+    app: home
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: home
+  template:
+    metadata:
+      labels:
+        app: home
+    spec:
+      containers:
+      - name: home
+        image: 637423232679.dkr.ecr.ap-south-1.amazonaws.com/home:latest
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laptop
+  labels:
+    app: laptop
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: laptop
+  template:
+    metadata:
+      labels:
+        app: laptop
+    spec:
+      containers:
+      - name: laptop
+        image: 637423232679.dkr.ecr.ap-south-1.amazonaws.com/laptop:latest
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mobile
+  labels:
+    app: mobile
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mobile
+  template:
+    metadata:
+      labels:
+        app: mobile
+    spec:
+      containers:
+      - name: laptop
+        image: 637423232679.dkr.ecr.ap-south-1.amazonaws.com/mobile:latest
+        ports:
+        - containerPort: 80
+
+
+3. Now, we will write the service :
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-srv
+spec:
+  selector:
+     app: home
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: laptop-srv
+spec:
+  selector:
+     app: laptop
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8081
+      targetPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mobile-srv
+spec:
+  selector:
+     app: mobile
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8082
+      targetPort: 80
+
+
+
+4. To create a service first create a file and create with the below command : 
+      Command :  kubectl get service -n dev
+
+
+5. To test the ClusterIP service first we hava to create an image and inside this we have to access our ClusterIP
+      command: 
+            a) kubectl run -it ubuntu --image=ubuntu -- bash
+            b) kubectl delete pod ubuntu
+
+6. How to call the service with the ClusterIP :
+      Command : 
+            a) curl 10.109.182.208:8081/laptop/
+            b) curl 10.109.182.208:8081/mobile/
+
+
+7. Download EKS application load balancer :
+      Link : https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
+      Command : kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/examples/2048/2048_full.yaml
+      Run Command : wget https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/examples/2048/2048_full.yaml
+
+
+8. Install the Application Load Balancer with Helm :
+      Link : https://docs.aws.amazon.com/eks/latest/userguide/lbc-helm.html
+     
+
+9. Install the Application Load Balancer with Manifests :
+      Link : https://docs.aws.amazon.com/eks/latest/userguide/lbc-manifest.html
+
+
+10. 
+
+
+
+

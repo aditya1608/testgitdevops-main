@@ -1,0 +1,31 @@
+
+
+1. terraform init: Think of terraform init as setting up your construction site before you start building. It's the phase 
+                   where you prepare the ground, gather your blueprints, and bring in the necessary tools and machinery. 
+                   Similarly, the terraform init command prepares your working directory containing your Terraform 
+                   configuration files. It downloads the necessary provider plugins and sets up the backend for storing your 
+                   Terraform state.
+
+2. terraform validate: This is akin to having a surveyor or inspector validate your blueprints and site to ensure everything 
+                       is up to code and ready for construction. terraform validate checks your Terraform configuration files 
+                       for any syntax errors, inconsistencies, or deviations from best practices. It's a crucial step to 
+                       ensure that your "blueprints" (i.e., configuration files) are good to go.
+
+
+3. terraform plan: Just as you'd have a comprehensive plan detailing every step of the house's construction, from the 
+                   foundation to the roof, terraform plan creates an execution plan. It shows you what actions Terraform will 
+                   take to reach the desired state of your infrastructure. It's a critical step in understanding the impact 
+                   of your code before any real changes are made.
+
+
+4. terraform apply: This is when the construction begins! Following the validated blueprint and the detailed construction plan,
+                    builders start their work. terraform apply takes the plan you've reviewed and starts creating, updating, 
+                    or deleting resources to match your desired infrastructure state. It's the step where your planning turns 
+                    into action.
+
+5. terraform destroy: Imagine you've built the house, but for some reason, you need to tear it down - perhaps to make way for 
+                      a larger structure or a different design. terraform destroy does just that but for your Terraform-managed
+                      infrastructure. It removes all resources created by your Terraform configuration, allowing you to start 
+                      anew or decommission a project entirely.
+
+

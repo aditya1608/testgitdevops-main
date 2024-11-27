@@ -1,0 +1,250 @@
+
+What is Manifest file and How to create Manifest file ?
+
+1. Below is the link where you can find kubernetes pods manifest examples : 
+        Link : https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/
+        
+        Example :
+
+apiVersion: v1
+kind: Pod
+metadata:
+  # Here name is a core property
+  name: static-web
+  # Here labels is additional property
+  labels:
+    role: myrole
+spec:
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - name: web
+          containerPort: 80
+          protocol: TCP
+        
+
+
+2. Now, create the .yml file and paste the above code :
+        Steps :
+                a) Create the .yml file. For ex - pod.yml and paste the above code
+                b) To run the above .yml file use this command : kubectl apply -f pod.yml
+                        Syntax : kubectl apply -f <file-name>
+                        Ex : kubectl apply -f pod.yml
+                c) To delete the pod : 
+                        Syntax : kubectl delete -f <file-name>
+                        Ex : kubectl delete -f pod.yml
+                   where,
+                        pod.yml is the filename in which we have written the code
+
+
+3. Creating namespace using Manifest file :
+        Link : https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test
+  labels:
+    name: test
+
+    To run the above code create a file with any name you want and paste the above code after that run the below command :
+        Syntax : kubectl apply -f <file-name>
+        Ex : kubectl apply -f namespace.yml
+        where,
+                namespace.yml is the file in which we have written the namespace code
+
+
+4. GitOps in DevOps : 
+        Link : https://codefresh.io/learn/gitops/
+
+
+5. Replica set example :
+   Link : https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+   Example :
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+    tier: frontend
+spec:
+  # modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: php-redis
+        # Here we have to mention the ECR repository link
+        image: us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5
+
+
+6. RelicaSet with namespace :
+   Example :
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  namespace: test
+  name: frontend
+
+spec:
+  # modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+
+
+
+7. Replica Set and Namespace creation in Single File :
+   Example :
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: follow
+  labels:
+    name: follow
+
+---
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  namespace: follow
+  name: frontend
+
+spec:
+  # modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+
+
+8. Creating Replica Set with the given RAM and CPU :
+
+   Link : https://sysdig.com/learn-cloud-native/kubernetes-replicasets-overview/
+  
+   Example :
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: follow
+  labels:
+    name: follow
+
+---
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  namespace: follow
+  name: frontend
+
+spec:
+  # modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+
+9. Deployment Example with Multiple Containers : 
+   Example :
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+      - name: tomcat
+        image: tomcat:latest
+        ports:
+        - containerPort: 8080
+
+
+
+10. kubectl api-resources : this command will list all the pods name with their versions
+
+      Example :   replicasets            rs           apps/v1                  true         ReplicaSet
+
+
+11. kubectl get-nodes : List the cluster name of the kubernetes
+
+12. minikube ssh : This command will allow you to run the commands inside the kubernetes cluster.
+
+13. The difference between a Container, A Pod and A Deployment :
+
+        Container:                                  Pod:                                         Deployment:
+
+  a) You provide specification to         Here, Kubernetes does that instead          Kubernetes offers something which is the
+     run the container in command         of writing command in command line          requirements to move people from Docker
+     line.                                you can create a yaml manfiest file.        to kubernetes.
+     Ex : docker run -it <image-name>     Here, your yaml file is nothing but a
+                                          running specifications of docker            i)  Auto Healing
+                                          container.                                  ii) Auto Scaling
+
+                                          In a pod we can create a single or          Deployment also offers
+                                          multiple containers.                        "Zero Time Deployment"
+
+                                       
+    Kubernetes Controller : This controller will always ensure that Actual State will always be equal to the desired state.
+

@@ -1,0 +1,75 @@
+
+
+1. Terraform Langauge  basics :
+        a) Code in the Terraform language is stored in plain text file with the .tf file extension
+        b) There is also a JSON-based variant of the language that is named with the .tf.json file extension
+        c) We can call the files containing terraform code as a terraform configuration files or Terraform Manifest.
+
+
+2. Terraform working Directory 
+
+    Configuration Syntax :
+
+        a) Blocks : A block is a container for other content
+
+            # Template
+            <BLOCK TYPE> "<BLOCK LABEL>" "<BLOCK LABEL>" {
+                # Block Body
+
+                <IDENTIFIER> = <EXPRESSION> # Argument
+            }
+
+            Example :
+                        provider "aws" {
+                                                region                    =     "ap-south-1"
+                                            # (Argument key/Identifier)        (Expression / Argument Value)
+
+                                       }
+
+
+            Inside the block we can define 3 things :
+
+                a) argument
+                b) attribute
+                c) meta-argument :
+                                Meta-arguments are used in Terraform to control how resources are created, updated, or destroyed. They are not specific to any particular resource type, but instead provide an interface for configuring behaviours across all resources. 
+
+                                A meta-argument in Terraform is used to control the dependencies between resources. Below are the different meta-arguments we used. 
+
+                                    i)   depends_on
+                                    ii)  count
+                                    iii) for_each
+                                    iv)  provider
+                                    v)   lifecycle
+
+
+        b) Arguments
+        c) Identifiers
+        d) Comments
+
+3. Blocks are of 2 types :
+    a) top-level blocks
+    b) block inside block
+
+
+4. Creating profile in aws :
+        Command : aws configure --profile "dev-1" 
+
+
+5. To list all aws created profiles : 
+        Command : aws configure list-profiles
+
+
+6. Types of Variables in Terraform
+
+    a) string
+    b) list
+    c) number
+    d) map
+    e) bool
+    f) any
+    g) tuple
+    h) object
+    
+
+

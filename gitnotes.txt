@@ -1,0 +1,2 @@
+Download WSL for windows which is Ubuntu platform
+url : https://ubuntu.com/desktop/wsl

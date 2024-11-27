@@ -1,0 +1,34 @@
+
+1. What is Docker Image?
+    Docker images are built using the Dockerfile which consists of a set of instructions that are required to 
+    containerize an application. The docker image includes the following to run a piece of software. A docker image4
+    is a platform-independent image that can be built in the Windows environment and it can be pushed to the docker
+    hub and pulled by others with different OS environments like Linux.
+
+        a. Application code.
+        b. Runtime.
+        c. Libraries
+        d. Environmental tools.
+
+    Docker image is very light in weight so can be portable to different platforms very easily.
+
+2. Components of Docker Image:
+    The following are the terminologies and components related to Docker Image:
+
+        a. Layers: Immutable filesystem layers stacked to form a complete image.
+        b. Base Image: The foundational layer, often a minimal OS or 
+                       runtime environment.
+        c. Dockerfile: A text file containing instructions to build a 
+                       Docker image.
+        d. Image ID: A unique identifier for each Docker image.
+        e. Tags: Labels used to manage and version Docker images.  
+
+
+3. Run a Docker File with different name :
+        Command : docker build -t <tag-name> -f <file-name> .
+        Example : docker build -t myubuntu:v1 -f MyDocker .
+
+
+
+
+

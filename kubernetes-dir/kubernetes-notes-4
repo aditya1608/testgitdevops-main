@@ -1,0 +1,146 @@
+
+
+1. kubectl api-resources : this command will list all the api resources available in kubernetes
+
+2. kubectl api-resources | grep pod : this command list the api versions of the pod
+
+3. kubectl api-resources | grep rs : this command will list the description of Replica Set
+
+4. Replica Set Example : 
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+
+spec:
+  # modify replicas according to your case
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook
+
+  template:
+    metadata:
+      labels:
+        app: guestbook
+    spec:
+      containers:
+      - name: nginx-image
+        image: nginx:latest
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+
+5. snap install yq : this command is to check the manifest file for errors or lint the file
+
+6. Run multiple container using Deployment Example :
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+      - name: tomcat
+        image: tomcat:latest
+        ports:
+        - containerPort: 8080
+
+
+7. Install EKS Cluster Process:
+      - EC2 instance with ADMIN role
+      - Install eksctl inside EC2 instance
+      
+      eksctl installation process link : https://linux.how2shout.com/how-to-install-eksctl-cli-tool-on-ubuntu-linux/
+
+
+8. Install the aws cli :
+      Link : https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+
+9. EKS Cluster creation example link :
+      Link: https://eksctl.io/usage/creating-and-managing-clusters/
+
+
+10. 
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: basic-cluster
+  region: ap-south-1
+
+nodeGroups:
+  - name: basic-node-dev
+    instanceType: t2.medium
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 2
+    volumeSize: 20
+    ssh:
+      allow: true # will use ~/.ssh/id_rsa.pub as the default ssh key
+
+cloudWatch:
+   clusterLogging:
+      enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+
+11. Create IAM role for EC2 instances with Admin Permission
+12. eksctl create cluster -f <file-name>.yml
+13. Install the kubectl :
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/bin
+      - kubectl get svc : Outputs the created cluster
+      - Install the kubens and kubectx :  wget https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubens_v0.9.5_linux_x86_64.tar.gz
+      - mv kubens /usr/bin/kubens
+
+      o/p -    NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+               kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   21m
+
+14.AWS Elastic Container Registry configuration for private repository in ECR :
+      Link : https://minikube.sigs.k8s.io/docs/tutorials/configuring_creds_for_aws_ecr/
+
+
+14. Deleting a EKS Cluster :  eksctl delete cluster -f ekscluster.yml
+
+15. kubectl get svc : To list one or more services
+
+16. Update the AWS CLI version :
+        Link : https://stackoverflow.com/questions/73744199/unable-to-connect-to-the-server-getting-credentials-decoding-stdout-no-kind
+
+        Update your aws cli version :
+              Syntax : aws eks update-kubeconfig --name=<your-cluster-name>
+              Command : aws eks update-kubeconfig --name=basic-cluster
+
+
+
+
+
+
+
+

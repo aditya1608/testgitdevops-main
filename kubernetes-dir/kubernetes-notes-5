@@ -1,0 +1,63 @@
+
+                                    Ingress Controller
+
+
+1. Creating basic Docker File : 
+
+  a) Laptop :
+              FROM nginx:latest
+              RUN mkdir /usr/share/nginx/html/laptop/
+              RUN echo "<h1>Welcome to the laptop page of NGINX</h1>" > /usr/share/nginx/html/laptop/index.html
+
+              Command to build :  vi dockerfile
+                                  docker build -t nginx:laptop .
+                                  docker run -d -P nginx:laptop
+
+
+  b) Mobile :
+              FROM nginx:latest
+              RUN mkdir /usr/share/nginx/html/mobile/
+              RUN echo "<h1>Welcome to the mobile page of NGINX</h1>" > /usr/share/nginx/html/mobile/index.html
+
+               Command to build :  vi dockerfile
+                                   docker build -t nginx:mobile .
+                                   docker run -d -P nginx:mobile
+
+  c) Home :
+              FROM nginx:latest
+              RUN echo "<h1>Welcome to the home page of NGINX</h1>" > /usr/share/nginx/html/index.html
+              
+               Command to build :  vi dockerfile
+                                  docker build -t nginx:home .
+                                  docker run -d -P nginx:home
+
+
+2. Now, after creating the images and running the container from images we have to push this images into the ECR repository :
+   But, before that first install the aws cli  :
+      Command : 
+                  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                  unzip awscliv2.zip
+                  sudo ./aws/install
+
+      Link : https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+    
+3. Now, push the image in ECR :
+
+
+4. Next step is to create the deployment of all 3 images :
+
+    a) home-deplomyment.yml :
+          
+
+
+
+
+
+
+
+
+
+
+
+

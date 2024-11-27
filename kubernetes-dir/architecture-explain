@@ -1,0 +1,152 @@
+
+
+Problems with Docker -----------------------> 
+
+
+1. Docker is a Container Platform and Kubernetes is Container Orchestration platform.
+
+2. What is Container Orchestration :
+    Container orchestration is the process of automating the management of containerized applications, including their deployment, scaling, and security. It can be used in any computing environment that supports containers, such as public, private, hybrid, and multicloud environments.
+
+3. Container are Ephimeral in nature (Ephimeral means short life or short living in nature) means the container can die and revive
+   anytime.
+
+4. In Docker there is only one host and on the top of host we will deploy multiple containers.
+
+5. Docker has some problems which is listed below :
+
+    Problem 1 : SINGLE HOST IN NATURE beacause of the single host in nature the containers are impacting each other
+    Problem 2 :  If somebody kills the container then that container will not be accessible and after that you have to
+                 manually start the container. So, this issue is called AUTO HEALING
+
+                 So, What is Auto Healing ?
+                 Auto healing is a behaviour where without users manual intervention your container should start itself.
+
+    Problem 3 : Auto Scaling and Load Balancing feature not supported
+
+    Problem 4 : Docker is very simple platform means Docker doesn't support Enterprise level application support
+                So, what are the mininal things required that Docker doesn't support 
+                    a) Load Balancer
+                    b) Firewall
+                    c) AutoScaling
+                    d) Auto Heal
+                    e) Support some API Gateways
+                    f) White listing and Black listing
+
+                The above points are Enterprise Level Standards and Docker doesn't support all of this by default.
+
+
+ 6. Docker is never used in Production because of Lack of Enterprise Level Standards.
+
+
+
+Problems Solved By Kubernetes -----------------------> 
+
+
+1. Kubernetes offer 4 fundamental advantages against Docker :
+
+    a) By default kubernetes is Cluster in nature. Cluster means it is a Group of Nodes. 
+       When we install Kubernetes it will install in a Master Node Architecture. Here, there is one Master and Multiple Nodes
+       or Workers.
+       
+       Kubernetes can be installed in one single node but only in Developer Environment.
+
+    b) Kuberebetes offer Auto Healing feature and in Kuberenetes Auto Healing feature is implemented by ReplicaSet 
+       (Replication Controller is a old name). Kubernetes is dependent on YAML file (YAML is a indentation format file)
+
+    c) Auto Scaling and this problem is Handled by API Server
+
+    d) Multiple Enterprise Level Support
+
+
+
+
+Kubernetes Architecture -----------------------> 
+
+
+1. Kubernetes has something called :
+    a) Control Plane : API Server, ETCD (distributed /etc), Scheduler, Controller Manager, Cloud Controller Manager (CCM) Components
+    b) Data Plane : kubelet, kubeproxy, Container run-time
+
+
+2. In Docker the simplest thing is Container and in Kubernetes the simplest thing is Pod and the Pod is just a wrapper around the 
+   container.
+
+
+3. When you are running a container you need a Container Runtime to run the container.
+   In Docker you have container runtime called Docker Shim.
+
+
+4. In kubernetes the smallest level of Deployment is called Pod.
+
+
+5. Kubelet is responsible for running your pods and if the pod is not running kebelet will inform this to control plane that
+   something is wrong and after that necessary action will be taken.
+
+   Kubelet is responsible that your pod is always up and running.
+
+6. Kubernetes can use Container runtime which actually run the container : 
+    For ex : Docker shim, containerd, crio
+
+
+7. In Docker we have Docker Zero or Bridge Networking and this Networking is mandatory for running you pods.
+   Kubeproxy in Kubernetes is used for managing Networking, Ip address, Load balancing capabilities.
+   
+   kubeproxy uses IP tables to maintain the Networking.
+
+
+8. So, the 3 important component in the worker node in kubernetes is :
+      a) kube-proxy
+      b) Kubelet
+      c) Container Runtime
+
+    
+9. Control plane in kubernetes is responsible for running your application
+
+
+10. In Control Plane there is an important core component called API Server and this API server is present in Master 
+    component or control plane of Kubernetes. 
+    
+    So, what is the use of API server ?
+    
+    - API server is a component that basically exposes your kubernetes. This kubernetes has be exposed to the external world.
+      The Heart of the Kubernetes is API server which basically takes request from the external world.
+
+    
+11. Second component in Master Component is Scheduler. So, the work of the scheduler is to schedule your pod or scheduling 
+    your resources in kubernetes.
+
+    So, who decides or receives the information is API Server and who acts or work upon the information is Scheduler.
+
+
+12. Next component is ETCD : The ETCD is a key value store and the entire kubernetes cluster information is stored as Objects
+                             are key pair value inside this ETCD. Without ETCD you don't have the cluster related information.
+
+
+    What is ETCD and it's full form ?
+
+    ---> The full form of etcd in Kubernetes is "distributed /etc". The name comes from the Unix directory structure, 
+         where "/etc" is a folder that stores configuration data for a single system. The "d" stands for "distributed.
+
+
+13. The last 2 components are Controller Manager and Cloud Controller Manager (CCM) :
+        As we know kubernetes support Auto Scaling. So, to support Auto Scaling kubernetes has some components like Controller
+        which automatically detects if there is a need to autoscale.
+
+        For ex: Replica Set
+
+
+14. CCM (Cloud Controller Manager) : CCM is a Open Source Utility
+
+
+15. So, in Summary the Master or Control has plane has 5 components :
+
+        a) API Server
+        b) Scheduler
+        c) ETCD 
+        d) Controller Manager (Replica Set)
+        e) CCM (Cloud Controller Manager)
+
+
+
+

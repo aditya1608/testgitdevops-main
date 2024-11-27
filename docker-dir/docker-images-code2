@@ -1,0 +1,13 @@
+
+FROM ubuntu:20.04  
+RUN apt-get update && apt-get install nginx -y
+COPY index.html /var/www/html
+ADD -> This can be used to copy file from local to image and it can be also use to add data from URL
+MAINTAINER -> to add the description about the image. For ex: who created the image, name, company etc 
+LABEL -> this option is used to give the version to the image
+LABEL version="1.0"
+ENV -> When we want to set the environment variable which can be used Globally
+EXPOSE 80
+CMD [ "" ]
+
+

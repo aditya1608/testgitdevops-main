@@ -1,0 +1,142 @@
+
+
+
+1. Terraform installation :
+    Link : https://registry.terraform.io/providers/hashicorp/aws/3.1.0/docs/resources/instance
+
+2. Terrform code link : https://registry.terraform.io/providers/hashicorp/aws/3.1.0/docs/resources/instance
+
+3. EC2 creation using terraform :
+
+
+# Create a new instance of the latest Ubuntu 20.04 on an
+# t3.micro node with an AWS Tag naming it "HelloWorld"
+provider "aws" {
+  region = "ap-south-1"
+  access_key = "AKIAZI2LCU2T2QKQUYPX"
+  secret_key = "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"
+}
+
+# data "aws_ami" "ubuntu" {
+#   most_recent = true
+
+#   filter {
+#     name   = "name"
+#     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+#   }
+
+#   filter {
+#     name   = "virtualization-type"
+#     values = ["hvm"]
+#   }
+
+#   owners = ["637423232679"] # Canonical
+# }
+
+resource "aws_instance" "web" {
+  ami           = "ami-0522ab6e1ddcc7055"
+  instance_type = "t3.micro"
+
+  tags = {
+    Name = "HelloWorld"
+  }
+}
+
+
+4. After creating this code first run the command :
+        Command : terraform init
+        This command is used to initialize directory comtaining terraform config file.  (backend Initialized) 
+
+5. terraform fmt : This command will format the code if the code is formatted well.
+
+6. terraform validate : validates the terrform configuration files in that respective directory to ensure that they are 
+                        syntactically valid and internally consistent.
+
+7. terrform plan : 
+        a) Create an execution plan
+        b) Terraform performs a refresh and determines what action necessary to achieve the desired state in configuration file
+
+
+8. terraform apply : this command will apply the changes required to reach the desired state of the configuration.
+
+9. terraform destroy : used to destroy the terraform managed infrastructure and this will ask for confirmation before
+                       destroying.
+
+
+10. Create the key pair using terraform code :
+
+
+# Creating ssh-key
+resource "aws_key_pair" "developer-key" {
+  key_name   = "developer-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCQ/8yWEVpD67Rkq9VRkMbhErQDJ/u4C3tyeZvpOOwzx5IR3z1+6QJSl0IrDQKrhxPg2mn4G9I8jgLUyucFquaoHbwS5Oc9BBz3Je76Ce29Vfd0/ZLKUAxxE9zW8VNrJ9OulE4SNSX8RZVJvwq57VSw8YqP3R+gAd00k2+e9NLNrdDuhml638THCNMOrxWXpyNUAqlf7WwhIVrBa+rTyx0jFC9oYtnFi8rOIimGD/hjpRQudL78XVa5FGtSFXGQrmZX217QkL0pzHJpklhCqp+Um+6eanTryZp7vmBLDVU4/2mZ6OclAMORzA75UqPn3Wvlwr0J76AMDAYdLhXAQK6Mv85su0Id5Sg9Yp8AJqYTkuLuiuWr/bWzws8iwd9hYq8RzjpJfKhD4d5Eg6XSNC1CWrvjxk/b0NrqS+bukqPdsd0tj8PhdSE5P7hc0obxqYRI7QutAy34ibOd3m08NKyMpG3HQ5L3okGB546ihFZiVYcVkopVCxPiNSvP0/ngChc= rajpal@DESKTOP-QCRJIH2"
+}
+
+output "keyname" {
+  value = "${aws_key_pair.developer-key.key_name}"
+}
+
+
+11. Attach the key-pair using terraform code :
+
+
+# Creating ssh-key
+resource "aws_key_pair" "developer-key" {
+  key_name   = "developer-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCQ/8yWEVpD67Rkq9VRkMbhErQDJ/u4C3tyeZvpOOwzx5IR3z1+6QJSl0IrDQKrhxPg2mn4G9I8jgLUyucFquaoHbwS5Oc9BBz3Je76Ce29Vfd0/ZLKUAxxE9zW8VNrJ9OulE4SNSX8RZVJvwq57VSw8YqP3R+gAd00k2+e9NLNrdDuhml638THCNMOrxWXpyNUAqlf7WwhIVrBa+rTyx0jFC9oYtnFi8rOIimGD/hjpRQudL78XVa5FGtSFXGQrmZX217QkL0pzHJpklhCqp+Um+6eanTryZp7vmBLDVU4/2mZ6OclAMORzA75UqPn3Wvlwr0J76AMDAYdLhXAQK6Mv85su0Id5Sg9Yp8AJqYTkuLuiuWr/bWzws8iwd9hYq8RzjpJfKhD4d5Eg6XSNC1CWrvjxk/b0NrqS+bukqPdsd0tj8PhdSE5P7hc0obxqYRI7QutAy34ibOd3m08NKyMpG3HQ5L3okGB546ihFZiVYcVkopVCxPiNSvP0/ngChc= rajpal@DESKTOP-QCRJIH2"
+}
+
+
+resource "aws_instance" "web" {
+  ami           = "ami-0522ab6e1ddcc7055"
+  instance_type = "t2.micro"
+  key-name      =  "${aws_key_pair.developer-key.key_name}"
+
+  tags = {
+    Name = "instance-key"
+  }
+}
+
+
+10. Example 2 : Creating VPC and Internet Gateway
+
+
+terraform {
+  required_version = "~> 1.8"
+  required_providers {
+    aws = {
+        source = "hashicorp/aws"
+        version = "~> 5.55"
+    }
+  }
+}
+
+
+provider "aws" {
+  region = "ap-south-1"
+
+}
+
+
+resource "aws_vpc" "main" {
+  cidr_block       = "10.0.0.0/16"
+  instance_tenancy = "default"
+
+  tags = {
+    Name = "rajpal-vpc"
+  }
+}
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "main"
+  }
+}
+
+
+11. 
+
+
+

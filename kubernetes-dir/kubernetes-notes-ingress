@@ -1,0 +1,111 @@
+
+                                      Ingress Controller (Step by Step Setup)
+
+                              Link : https://docs.aws.amazon.com/eks/latest/userguide/lbc-manifest.html
+
+1.  Configure IAM :
+      command : curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/install/iam_policy.json
+
+2. Create an IAM policy using the policy downloaded in the previous step :
+      command : 
+                aws iam create-policy \
+              --policy-name AWSLoadBalancerControllerIAMPolicy \
+              --policy-document file://iam_policy.json
+
+3. Copy the ARN which is generated from step 2 :
+      arn:aws:iam::637423232679:policy/AWSLoadBalancerControllerIAMPolicy
+
+4. Create IAM role using eksctl :
+
+eksctl utils associate-iam-oidc-provider --region=ap-southeast-2 --cluster=custom-cluster --approve
+
+eksctl create iamserviceaccount \
+  --cluster=kube-cluster \
+  --region=ap-southeast-2 \
+  --namespace=kube-system \
+  --name=aws-load-balancer-controller \
+  --role-name AmazonEKSLoadBalancerControllerRole \
+  --attach-policy-arn=arn:aws:iam::637423232679:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+
+
+5. Install the cert-manager :
+
+kubectl apply \
+    --validate=false \
+    -f https://github.com/jetstack/cert-manager/releases/download/v1.13.5/cert-manager.yaml
+
+
+6. curl -Lo v2_7_2_full.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.7.2/v2_7_2_full.yaml
+
+
+7. sed -i.bak -e '612,620d' ./v2_7_2_full.yaml
+
+8. sed -i.bak -e 's|your-cluster-name|custom-cluster|' ./v2_7_2_full.yaml
+
+9. kubectl apply -f v2_7_2_full.yaml
+
+10. curl -Lo v2_7_2_ingclass.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.7.2/v2_7_2_ingclass.yaml
+
+
+11. kubectl apply -f v2_7_2_ingclass.yaml
+
+12. kubectl get deployment -n kube-system aws-load-balancer-controller
+
+13. kubectl get pods -n kube-system
+
+14.  kubectl logs -f aws-load-balancer-controller-796f4db579-fpddp -n kube-system
+
+15. Setup Ingress Controller in Load Balancer :
+      Link : https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
+
+16. After downloading this file use the following command :
+      Command : cat 2048_full.yaml | yq
+
+17. Copy the code :
+      Code:
+
+
+a) Service : 
+
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        namespace: dev
+        name: ingress-app-dev
+        annotations:
+          alb.ingress.kubernetes.io/scheme: internet-facing
+          alb.ingress.kubernetes.io/target-type: ip
+      spec:
+        ingressClassName: alb
+        rules:
+          - http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: home-srv
+                      port:
+                        number: 8080
+                - path: /laptop/
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: laptop-srv
+                      port:
+                        number: 8081
+                - path: /mobile/
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: mobile-srv
+                      port:
+                        number: 8082
+
+                        
+
+
+
+
+

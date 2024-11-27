@@ -1,0 +1,96 @@
+
+reset, revert , restore, fetch
+
+
+1. git reset : this command is used to revert the commit you did in your local workspace. This command requires the commit id
+               so that it will revert the code above that commit id and it will move the changes from commit to staging area.
+               But still you can see your changes made in the code or file. 
+
+               There are 2 types of reset in GIT Soft reset and hard reset :-
+
+                    a) Soft reset : The soft reset will just revert the commit up to the given commmit id and it will move the 
+                                    file from commit stage to staging area.
+
+                            Command : git reset --soft <commit-id>
+                            Example : git reset adb43n3
+
+                    b) Hard reset : The hard reset will revert the commit up to the given commit id and it will also  
+                                    remove the content also.
+
+                            Command : git reset --hard <commit-id>
+                            Example : git reset --hard adb43n3
+                            
+
+2. git revert : this command is used when we want to discard our changes but it will not move the files from commit to staging
+                area. But the difference between the two is git reset removes the commit history when we are reseting the changes and git revert will retain the commit hisory after reverting the commit id so that we can bring back our reverted code if we want.
+
+                    Command : git revert <commit-id>
+                    Example : git revert adb43n3
+
+
+
+3. git restore :  this command is used when we want to remove the added files from staging area and the second 
+                  use case is that when we want to discard our local changes which we made in that case also git restore command is useful.
+                  
+
+                    Command : git restore --staged <file-name>
+                    Example : git revert --staged file1.txt
+
+
+
+4. git fetch : this command is used when we want to check if there any new changes in our repository. If there is any 
+               changes you will be notified otherwise it will show message already up-to-date but remember it will pull 
+               any code from the repository.
+
+                    Command : git fetch
+
+
+5. git stash : This command enables you to switch branches without commiting the current branch.
+               The stash's meaning is "store meaning safely in a hidden place." The sense in Git is the same for stash. Git  temporarily
+               saves your data safely without commiting.
+
+               Command : 
+                        a) git stash : it will automatically moves the uncommited files to stash.
+                        b) git stash list : it will show all the stashed files
+                        c) git stash pop : git stash pop applies the top stashed element and removes it from the stack
+                        d) git stash pop <index-name> : this command will pops one file from multiple stashed files using index.
+                                Ex : git stash pop 1
+
+
+
+6. git diff :  Git diff command is used to in git to track the difference between the changes made on a file.
+               Diff command takes 2 inputs and reflects the differences between them.
+
+               Command :
+                        a) git diff --staged : this command will show the difference between the files from staging area to workspace
+                        b) git diff HEAD :  this command will how many lines has been added to the file or modified that is not present
+                                            in the repository
+
+
+
+7. What is the difference between SSH and HTTPS authentication?
+   Authentication Method: SSH relies on cryptographic key pairs for authentication, while HTTPS uses usernames and passwords or 
+   personal access tokens. Security: SSH is considered highly secure because it involves private and public keys, making it challenging 
+   for unauthorized users to gain access.
+
+
+
+8. Types of Branches in GIT :
+        a) Feature branch
+        b) Hotfix Branch - Production related issues
+        c) Release Branch
+        d) Feature Branches - Extra feature longterm
+        e) Bugfix branches - tester reported bug (Developer)
+        f) Develop branch - developer works here
+        g) Git branch - switching branch
+        h) Integration branch -  production
+        i) Local Branch -> workspace
+
+
+9. The two primary branches in Git flow are main and develop. There are three types of supporting branches with different intended 
+    purposes: feature, release, and hotfix.
+
+
+
+
+

@@ -1,0 +1,47 @@
+# nginx image in Ubuntu
+
+# Creating a nginx image from ubuntu image
+# Ubuntu Base image
+FROM ubuntu:20.04   
+
+# You can run multiple Linux commands using COPY option
+RUN apt-get update && apt-get install nginx -y
+
+# COPY <source> <destination> (Copy the file from local to container)
+COPY index.html /var/www/html
+
+# We can expose multiple ports also EXPOSE 80,8080,93 like this
+EXPOSE 80
+
+# To start the NGINX service we cannot run systemctl command because containers runs on the single process and it doesn't
+# have systemd process(daemon process). So, we have find another way to run this nginx service.
+# Open this file first vi /etc/systemd/system/multi-user.target.wants/nginx.service
+# In this file search for this line ExecStartPre=/usr/sbin/nginx -t -q -g 'daemon on; master_process on;'
+# /usr/sbin/nginx -t -q -g 'daemon on; master_process on;' this command will be used to start the NGINX service
+
+CMD [ "nginx", "-g", "daemon off;" ]
+#CMD ["nginx"]
+
+=======================================================================================================================
+
+# Docker command to Build the file
+Syntax :  docker build -t <tag-name> <file-name>
+          where,
+                t = tagname
+
+          Example : docker build -t nginx:v1 dockerfile
+
+# After running the above command you will find your image by using the docker images command
+# Now, to run this image use the command below
+
+docker run -d -p 82:80 nginx:v1
+
+# Remember to add port no 82 in the EC2 instance security group. If not added it will not work
+# Now last step is to test the web server by using the EC2 instance URL
+
+        http://43.204.103.239:82/ 
+
+Task : 
+    - Create image for apache2, mysql
+    - Create image to run python on 2.7 version with file app.py
+

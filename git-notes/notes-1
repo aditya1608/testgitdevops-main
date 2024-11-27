@@ -1,0 +1,54 @@
+
+
+1. Download WSL for windows :
+        Link : https://ubuntu.com/desktop/wsl
+
+2. Git : Version control system
+
+3. Command to generate key : 
+        Command : ssh-keygen
+
+        After running the above command you will get the public key and you have to paste in the key column
+   
+4. git clone <git-url> : this command use to clone the remote repository to local
+
+5. git add . : This command will move the all files and folders from local workspace to the Staging Area 
+
+6. git add <file-name> : to save the changes from Staging to Local Repo of the given filename
+
+7. git log : Shows the detail log of the action we performed
+
+8. git push origin main : this command will push the changes into the remote repository.
+        where,
+             main : the name of branch you want to push the data
+             origin : is the name of remote repository
+
+9. git status : to see the untracked files for local workspace or to see the files properties for all workspace.
+
+10. git pull origin main : pull the changes from the remote repository
+
+11. git checkout -b <new-branch-name> -> this command will create the new branch with name develop
+        Ex : git checkout -b testing
+
+12. git branch : it is used to display the current working branch.
+
+13. git switch <branch-name> : to switch to another branch
+        Ex : git switch main
+
+14. git push origin <branch-name> : this command will push the data to the given branch name.
+        Ex : git push origin testing
+
+15. git merge <source-branch> <master-branch> : this command will merge the source branch data to master branch
+        Ex : git merge develop main (Here we are merging develop branch data to master branch data)
+
+
+16. git log --oneline : to check all the commit log
+
+17. Pulling a repo from remote repository :
+        Syntax :  git branch -f <remote_branch_name> origin/<remote_branch_name>
+        Command : git branch -f company origin/company
+
+                where, company is the branch name in remote repository
+
+
+

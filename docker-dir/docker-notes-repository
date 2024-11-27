@@ -1,0 +1,25 @@
+
+Now we will learn how to push our images in Docker Hub Repository
+
+1. First step is to create account in Docker Hub : 
+        Link : https://hub.docker.com/login
+
+2. Now create a Public repository by any name. Remember don't create Private repository because it's not free and you have 
+   to pay for Private Repo 
+
+3. Now login in to the Docker account through EC2 instance :
+        command :  docker login
+        Enter you username and password and if all credentials are correct it will show login successfull
+
+4. If you want to push your code into the Docker Hub repository remember you image name and the repository name should be same.
+
+5. If the image and repo name is not same then run the following command :
+      Suppose my image name is : nginx:v1 
+      Your repo name is : rajpalsaini/nginx-repo
+
+6. So, run the below command to change your image name so that I will be the same name as your repo name :
+      command : docker tag nginx:v1 rajpalsaini/nginx-repo:v1
+      where,
+            nginx:v1 is your image name
+            rajpalsaini/nginx-repo:v1 is your Docker Hub repository name
+
